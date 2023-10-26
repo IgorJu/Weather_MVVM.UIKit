@@ -9,7 +9,7 @@ import UIKit
 
 final class CurrentWeatherCollectionViewCell: UICollectionViewCell {
     
-    static let cellIdentifier = "CurrentWeatherCollectionViewCell"
+    static var cellIdentifier: String { "\(Self.self)" }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -18,5 +18,9 @@ final class CurrentWeatherCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError()
+    }
+    
+    func configure(with viewModel: CurrentWeatherCollectionViewCellViewModel) {
+        
     }
 }

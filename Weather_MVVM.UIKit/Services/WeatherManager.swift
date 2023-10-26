@@ -10,29 +10,53 @@ import WeatherKit
 import CoreLocation
 
 final class WeatherManager {
+    
+    private var weather: CurrentWeather?
     static let shared = WeatherManager()
+
+    private init() {
+        
+    }
     
-    let service = WeatherService.shared
-    
-    private(set) var currentWeather: CurrentWeather?
-    private(set) var hourlyWeather: [HourWeather] = []
-    private(set) var dailyWeather: [DayWeather] = []
-    
-    
-    private init() {}
-    
-    public func getWeather(for location: CLLocation, completion: @escaping () -> Void) {
-        Task {
-            do {
-                let result = try await service.weather(for: location)
-                self.currentWeather = result.currentWeather
-                self.dailyWeather = result.dailyForecast.forecast
-                self.hourlyWeather = result.hourlyForecast.forecast
+    func getCurrentWeather(completion: @escaping (CurrentWeather) -> Void) {
+        NetworkManager.shared.fetch(CurrentWeather.self, from: API.weatherURL.url) { result in
+            switch result {
                 
-                completion()
-            } catch {
-                print(String(describing: error))
+            case .success(let weather):
+                print(weather)
+                completion(weather)
+            case .failure(let error):
+                print(error.localizedDescription)
             }
+            
         }
     }
+    
+//    func fetchWeather() async -> CurrentWeather  {
+//            do {
+//                 weather = try await NetworkManager.shared.fetchWeather()
+//                print(weather)
+//                await MainActor.run {
+//                }
+//            } catch {
+//                print(error)
+//            }
+//        return weather!
+//
+//    }
+
+    
+//    func getWeather(for location: CLLocation, completion: @escaping () -> Void) -> CurrentWeather {
+//        NetworkManager.shared.fetch(CurrentWeather.self, from: API.weatherURL.url) { [weak self] result in
+//            let weather: CurrentWeather
+//                    switch result {
+//                    case .success(let fethingWeather):
+//                        weather = fethingWeather
+//                    case .failure(let error):
+//                        print(error)
+//                    }
+//            return weather
+//                }
+//            }
+    
 }

@@ -11,25 +11,22 @@ final class WeatherViewController: UIViewController {
 
     private let primaryView = CurrentWeatherView()
     
+    private let viewModel = CurrentWeatherViewModel()
+    
+    private let networkManager = NetworkManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        getLocation()
+        viewModel.getLocation()
+        viewModel.weather?.bind({ weather in
+            print(weather)
+        })
+        
     }
 
     
-    private func getLocation() {
-        LocationManager.shared.getCurrentLocation { location in
-            print(location)
-            WeatherManager.shared.getWeather(for: location) { [weak self] in
-                DispatchQueue.main.async {
-                    self?.primaryView.reload()
-                }
-                
-            }
-        }
-    }
+    
     
     private func setupView() {
         view.backgroundColor = .systemBackground

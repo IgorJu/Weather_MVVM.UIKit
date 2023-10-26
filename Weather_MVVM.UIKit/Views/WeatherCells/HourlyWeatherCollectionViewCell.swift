@@ -18,6 +18,11 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError()
     }
+    
+    func configure(with viewModel: HourlyWeatherCollectionViewCellViewModel) {
+        
+    }
+
 }
 
 
