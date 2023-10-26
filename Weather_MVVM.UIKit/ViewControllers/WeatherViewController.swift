@@ -10,7 +10,6 @@ import UIKit
 final class WeatherViewController: UIViewController {
 
     private let primaryView = CurrentWeatherView()
-    
     private let viewModel = CurrentWeatherViewModel()
     
     private let networkManager = NetworkManager.shared
@@ -25,7 +24,17 @@ final class WeatherViewController: UIViewController {
         
     }
 
-    
+    private func createViewModels(currentWeather: CurrentWeather) {
+        var hourlyWeatherList = [HourlyWeatherCollectionViewCellViewModel]()
+        WeatherManager.shared.getCurrentWeather { weather in
+            hourlyWeatherList = weather
+        }
+        var viewModels: [WeatherViewModel] = [
+            .current(viewModel: .init(weather: currentWeather)),
+            .hourly(viewModels: hourlyWeatherList)
+        ]
+        primaryView.configure(with: viewModels)
+    }
     
     
     private func setupView() {

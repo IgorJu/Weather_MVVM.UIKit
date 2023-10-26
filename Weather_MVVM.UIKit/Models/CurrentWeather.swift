@@ -10,7 +10,7 @@ import Foundation
 struct CurrentWeather: Codable {
     let cod: String
     let message, cnt: Int
-    let list: [List]
+    let hourWeather: [HourWeather]
     let city: City
 }
 
@@ -29,7 +29,7 @@ struct Coord: Codable {
 }
 
 // MARK: - List
-struct List: Codable {
+struct HourWeather: Codable {
     let dt: Int
     let main: MainClass
     let weather: [WeatherElement]
@@ -37,12 +37,12 @@ struct List: Codable {
     let wind: Wind
     let visibility: Int
     let pop: Double
-    let sys: Sys
+    //let sys: Sys
     let dtTxt: String
     let rain: Rain?
 
     enum CodingKeys: String, CodingKey {
-        case dt, main, weather, clouds, wind, visibility, pop, sys
+        case dt, main, weather, clouds, wind, visibility, pop
         case dtTxt = "dt_txt"
         case rain
     }
@@ -81,15 +81,15 @@ struct Rain: Codable {
     }
 }
 
-// MARK: - Sys
-struct Sys: Codable {
-    let pod: Pod
-}
-
-enum Pod: String, Codable {
-    case d = "d"
-    case n = "n"
-}
+//// MARK: - Sys
+//struct Sys: Codable {
+//    let pod: Pod
+//}
+//
+//enum Pod: String, Codable {
+//    case d = "d"
+//    case n = "n"
+//}
 
 // MARK: - WeatherElement
 struct WeatherElement: Codable {

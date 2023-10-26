@@ -7,10 +7,24 @@
 
 import Foundation
 
-struct HourlyWeatherCollectionViewCellViewModel {
-   // private let model: HourWeather
+final class HourlyWeatherCollectionViewCellViewModel {
+    private let hourWeather: HourWeather
     
-//    init(model: HourWeather) {
-//        self.model = model
-//    }
+    init(hourWeather: HourWeather) {
+        self.hourWeather = hourWeather
+    }
+    
+    var time: String {
+        hourWeather.dtTxt
+    }
+    
+    var temperature: String {
+        String(hourWeather.main.temp)
+    }
+    
+    
+    var iconName: String {
+        hourWeather.weather.first?.icon ?? ""
+    }
+    
 }

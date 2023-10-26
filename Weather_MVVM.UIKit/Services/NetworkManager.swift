@@ -8,15 +8,18 @@
 import Foundation
 
 enum API {
-    case weatherURL
+    case weatherURL(city: String)
     
     var url: URL {
         switch self {
-        case .weatherURL:
-            return URL(string: "https://api.openweathermap.org/data/2.5/forecast?appid=380a13ab79f381d11c50c917b4dbb7cf&q=London&units=metric") ??  URL(fileURLWithPath: "")
+        case .weatherURL(let city):
+            let apiKey = "380a13ab79f381d11c50c917b4dbb7cf" // Замените на ваш ключ API OpenWeatherMap
+            let urlString = "https://api.openweathermap.org/data/2.5/forecast?appid=\(apiKey)&q=\(city)&units=metric"
+            return URL(string: urlString) ?? URL(fileURLWithPath: "")
         }
     }
 }
+
 
 
 enum NetworkError: Error {
