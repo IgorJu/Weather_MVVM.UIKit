@@ -7,16 +7,22 @@
 
 import Foundation
 
-final class CurrentWeatherCollectionViewCellViewModel {
+final class CurrentWeatherViewModel {
     
-    private let weather: CurrentWeather
-    
-    init(weather: CurrentWeather) {
-        self.weather = weather
+    var weather: Bindable<CurrentWeather>?
+                            
+     func getLocation() {
+        LocationManager.shared.getCurrentLocation { location in
+            print(location)
+            WeatherManager.shared.getCurrentWeather(completion: { weather in
+                self.weather?.value = weather
+            })
+        }
     }
-    
+
+        
     var temperature: String {
-        if let hourWeather = weather.hourWeather.first {
+        if let hourWeather = weather?.value.hourWeather.first {
             let temp = hourWeather.main.temp
             return String(temp)
         } else {
@@ -25,12 +31,12 @@ final class CurrentWeatherCollectionViewCellViewModel {
     }
     
     var city: String {
-        return weather.city.name
+        return weather?.value.city.name ?? "City"
     }
     
     var iconName: String {
         var icon = ""
-        if let hourWeather = weather.hourWeather.first {
+        if let hourWeather = weather?.value.hourWeather.first {
             if let weather = hourWeather.weather.first {
                 icon = weather.icon
             } else {

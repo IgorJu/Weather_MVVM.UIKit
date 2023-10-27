@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class HourlyWeatherCollectionViewCellViewModel {
+final class HourlyWeatherViewModel {
     private let hourWeather: HourWeather
     
     init(hourWeather: HourWeather) {

@@ -1,21 +1,21 @@
 //
-//  SettingsView.swift
+//  HourlyWeatherView.swift
 //  Weather_MVVM.UIKit
 //
-//  Created by Igor on 21.10.2023.
+//  Created by Igor on 27.10.2023.
 //
 
 import UIKit
 
-protocol SettingsViewDelegate: AnyObject {
-    func settingsView(_ settingsView: SettingsView, didTap option: SettingOption)
+protocol HourlyWeatherDelegate: AnyObject {
+    func settingsView(_ view: HourWeatherView, didTap option: SettingOption)
 }
 
-final class SettingsView: UIView {
+final class HourWeatherView: UIView {
     
-    weak var delegate: SettingsViewDelegate?
+    weak var delegate: HourlyWeatherDelegate?
     
-    private var  viewModel: SettingsViewViewModel? {
+    private var  viewModel: CurrentWeatherViewModel? {
         didSet {
             tableView.reloadData()
         }
@@ -23,7 +23,10 @@ final class SettingsView: UIView {
     
     private let tableView: UITableView  = {
         let table = UITableView()
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        table.register(
+            HourlyWeatherTableViewCell.self,
+            forCellReuseIdentifier: HourlyWeatherTableViewCell.cellIdentifier
+        )
         table.translatesAutoresizingMaskIntoConstraints = false
         return table
     }()
@@ -49,21 +52,23 @@ final class SettingsView: UIView {
         fatalError()
     }
     
-    public func configure(with viewModel: SettingsViewViewModel) {
+    public func configure(with viewModel: CurrentWeatherViewModel) {
         self.viewModel = viewModel
     }
 }
 
-extension SettingsView: UITableViewDelegate, UITableViewDataSource {
+extension HourWeatherView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel?.options.count ?? 0
+        viewModel?.weather?.value.hourWeather.count ?? 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        if let viewModel {
-            cell.textLabel?.text = viewModel.options[indexPath.row].title
-        }
+       guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: HourlyWeatherTableViewCell.cellIdentifier,
+            for: indexPath
+       ) as? HourlyWeatherTableViewCell else { return UITableViewCell() }
+        cell.configure(with: <#T##HourlyWeatherViewModel#>)
+        
         
         return cell
     }
@@ -79,4 +84,3 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
     
     
 }
-

@@ -20,8 +20,6 @@ enum API {
     }
 }
 
-
-
 enum NetworkError: Error {
     case invalidURL
     case noData
@@ -55,20 +53,5 @@ final class NetworkManager {
                 }
             }.resume()
         }
-
-//    func fetchWeather() async throws -> CurrentWeather {
-//        guard let url = URL(string: API.weatherURL.urlString) else {
-//            throw NetworkError.invalidURL
-//        }
-//        let (data, _) = try await URLSession.shared.data(from: url)
-//        let decoder = JSONDecoder()
-//        decoder.keyDecodingStrategy = .convertFromSnakeCase
-//        guard let weather = try? decoder.decode(CurrentWeather.self, from: data) else {
-//            throw NetworkError.decodingError
-//        }
-//        print(weather)
-//        return weather
-//
-//    }
 }
 

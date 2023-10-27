@@ -25,17 +25,15 @@ final class WeatherViewController: UIViewController {
     }
 
     private func createViewModels(currentWeather: CurrentWeather) {
-        var list: [HourWeather] = []
-        WeatherManager.shared.getCurrentWeather(completion: { weather in
-            list = weather.hourWeather
+        //var list: [HourWeather] = []
+        WeatherManager.shared.getCurrentWeather(completion: { [weak self] weather in
+            //list = weather.hourWeather
+            self?.viewModel.weather?.value = weather
+        
+            self?.primaryView.configure(with: self?.viewModel ?? CurrentWeatherViewModel())
        })
-        let hourlyViewModels = list.map { HourlyWeatherCollectionViewCellViewModel(hourWeather: $0) }
+      //  let hourlyViewModels = list.map { HourlyWeatherViewModel(hourWeather: $0) }
 
-        var viewModels: [WeatherViewModel] = [
-            .current(viewModel: .init(weather: currentWeather)),
-            .hourly(viewModels:  hourlyViewModels)
-            ]
-        primaryView.configure(with: viewModels)
     }
     
     
