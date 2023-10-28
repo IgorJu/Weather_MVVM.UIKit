@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CurrentWeatherView: UIView {
+final class CurrentWeatherCell: UITableViewCell {
     
     private weak var viewModel: CurrentWeatherViewModel?
     
