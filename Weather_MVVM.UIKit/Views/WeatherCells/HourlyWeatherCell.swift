@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class HourlyWeatherTableViewCell: UITableViewCell {
+final class HourlyWeatherCell: UITableViewCell {
     
-    static var cellIdentifier: String { "\(Self.self)" }
+    static var identifier: String { "\(Self.self)" }
     
     private let tempLabel: UILabel = {
         let label = UILabel()

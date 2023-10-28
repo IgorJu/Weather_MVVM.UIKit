@@ -9,8 +9,8 @@ import UIKit
 
 final class CurrentWeatherCell: UITableViewCell {
     
-    private weak var viewModel: CurrentWeatherViewModel?
-    
+    static var identifier: String { "\(Self.self)" }
+
     private let tempLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -35,13 +35,13 @@ final class CurrentWeatherCell: UITableViewCell {
     }()
     
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .red
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        backgroundColor = .clear
         addSubview(tempLabel)
         addSubview(icon)
         addSubview(cityLabel)
-        
         addConstraints()
     }
     

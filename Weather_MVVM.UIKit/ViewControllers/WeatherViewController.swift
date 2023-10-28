@@ -9,45 +9,85 @@ import UIKit
 
 final class WeatherViewController: UIViewController {
 
-    private let primaryView = CurrentWeatherView()
+    private let tableView = UITableView()
     private let viewModel = CurrentWeatherViewModel()
+    private var hourViewModels = [HourlyWeatherViewModel]()
     
     private let networkManager = NetworkManager.shared
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        setTableView()
+        setConstraints()
         viewModel.getLocation()
         viewModel.weather?.bind({ weather in
-            self.createViewModels(currentWeather: weather)
+            self.fetchWeather(currentWeather: weather)
         })
         
     }
 
-    private func createViewModels(currentWeather: CurrentWeather) {
-        //var list: [HourWeather] = []
-        WeatherManager.shared.getCurrentWeather(completion: { [weak self] weather in
-            //list = weather.hourWeather
-            self?.viewModel.weather?.value = weather
+    private func fetchWeather(currentWeather: CurrentWeather) {
         
-            self?.primaryView.configure(with: self?.viewModel ?? CurrentWeatherViewModel())
+        WeatherManager.shared.getCurrentWeather(completion: { [weak self] weather in
+            self?.viewModel.weather?.value = weather
+            self?.hourViewModels = weather.hourWeather.map { HourlyWeatherViewModel(hourWeather: $0) }
        })
-      //  let hourlyViewModels = list.map { HourlyWeatherViewModel(hourWeather: $0) }
 
     }
-    
-    
-    private func setupView() {
-        view.backgroundColor = .systemBackground
-        view.addSubview(primaryView)
-        
+    private func setTableView() {
+         tableView.register(
+             CurrentWeatherCell.self,
+             forCellReuseIdentifier: CurrentWeatherCell.identifier
+         )
+        tableView.register(
+            HourlyWeatherCell.self,
+            forCellReuseIdentifier: HourlyWeatherCell.identifier
+        )
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+         tableView.backgroundColor = .clear
+         tableView.dataSource = self
+         tableView.delegate = self
+        view.addSubview(tableView)
+     }
+
+    private func setConstraints() {
         NSLayoutConstraint.activate([
-            primaryView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            primaryView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
-            primaryView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
-            primaryView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
 
+}
+
+//MARK: - UiTableViewDataSource, UiTableViewDelegate
+extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return section == 0
+        ? 1
+        : viewModel.weather?.value.hourWeather.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: CurrentWeatherCell.identifier,
+                for: indexPath
+            ) as? CurrentWeatherCell else { return UITableViewCell() }
+            cell.configure(with: viewModel)
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: HourlyWeatherCell.identifier,
+                for: indexPath
+            ) as? HourlyWeatherCell else { return UITableViewCell() }
+            cell.configure(with: hourViewModels[indexPath.row])
+            return cell
+        }
+        
+    }
+    
+    
 }
 

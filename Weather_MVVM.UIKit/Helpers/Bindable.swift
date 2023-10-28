@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Bindable<T> {
+final class Bindable<T> {
     typealias Listener = (T) -> Void
     
     var value: T {
@@ -27,3 +27,5 @@ class Bindable<T> {
         listener?(value)
     }
 }
+
+
