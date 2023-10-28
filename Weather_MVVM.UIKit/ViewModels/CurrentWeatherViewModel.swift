@@ -6,43 +6,37 @@
 //
 
 import Foundation
+import Combine
 
 final class CurrentWeatherViewModel {
     
-    var weather: Bindable<CurrentWeather>?
-                            
-     func getLocation() {
-        LocationManager.shared.getCurrentLocation { location in
-            print(location)
-            WeatherManager.shared.getCurrentWeather(completion: { weather in
-                self.weather?.value = weather
-            })
-        }
-    }
+    var weather: CurrentValueSubject<CurrentWeather?, Never> = CurrentValueSubject(nil)
 
-        
+    
+    private let weatherManager = WeatherManager.shared
+    
+    
+    
     var temperature: String {
-        if let hourWeather = weather?.value.hourWeather.first {
-            let temp = hourWeather.main.temp
-            return String(temp)
-        } else {
-            return ""
-        }
+        return String(weather.value?.list.first?.main.temp ?? 4)
     }
     
     var city: String {
-        return weather?.value.city.name ?? "City"
+        return weather.value?.city.name ?? "City"
     }
     
     var iconName: String {
-        var icon = ""
-        if let hourWeather = weather?.value.hourWeather.first {
-            if let weather = hourWeather.weather.first {
-                icon = weather.icon
-            } else {
-                return ""
+        return weather.value?.list.first?.weather.first?.icon ?? "sun.max"
+    }
+    
+    
+    func getLocation() {
+        LocationManager.shared.getCurrentLocation { [weak self] location in
+            print(location)
+            self?.weatherManager.getCurrentWeather { [weak self] weather in
+                            self?.weather.send(weather)
             }
         }
-        return icon
     }
+    
 }

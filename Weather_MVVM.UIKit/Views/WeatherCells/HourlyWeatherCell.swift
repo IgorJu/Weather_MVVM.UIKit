@@ -11,13 +11,25 @@ final class HourlyWeatherCell: UITableViewCell {
     
     static var identifier: String { "\(Self.self)" }
     
-    private let tempLabel: UILabel = {
+    private let minTempLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 42, weight: .medium)
+        label.font = .systemFont(ofSize: 24, weight: .medium)
+        label.textColor = .white
+        return label
+        
+    }()
+    
+    private let maxTempLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 24, weight: .medium)
+        label.textColor = .lightGray
         return label
     }()
+
     
     private var timeLabel: UILabel = {
         let label = UILabel()
@@ -38,6 +50,7 @@ final class HourlyWeatherCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
         setConstraints()
+        backgroundColor = .clear
     }
     
     required init?(coder: NSCoder) {
@@ -45,31 +58,38 @@ final class HourlyWeatherCell: UITableViewCell {
     }
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            timeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            timeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20)
+            timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            timeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20)
+        ])
+        
+//        NSLayoutConstraint.activate([
+//            icon.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 10),
+//            icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+//            icon.widthAnchor.constraint(equalToConstant: 30),
+//            icon.heightAnchor.constraint(equalToConstant: 30)
+//        ])
+        
+        NSLayoutConstraint.activate([
+            minTempLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor , constant: 10),
+            minTempLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20)
         ])
         
         NSLayoutConstraint.activate([
-            icon.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 10),
-            icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            icon.widthAnchor.constraint(equalToConstant: 30),
-            icon.heightAnchor.constraint(equalToConstant: 30)
-        ])
-        
-        NSLayoutConstraint.activate([
-            tempLabel.leadingAnchor.constraint(equalTo: icon.trailingAnchor , constant: 10),
-            tempLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
+            maxTempLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
+            maxTempLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20)
         ])
     }
     
     private func addSubviews() {
-        addSubview(tempLabel)
+        addSubview(minTempLabel)
         addSubview(timeLabel)
-        addSubview(icon)
+        addSubview(maxTempLabel)
+        //addSubview(icon)
     }
     
     func configure(with viewModel: HourlyWeatherViewModel) {
-        tempLabel.text = viewModel.temperature
+        minTempLabel.text = viewModel.minTemp
+        maxTempLabel.text = viewModel.maxTemp
         timeLabel.text = viewModel.time
         icon.image = UIImage(systemName: viewModel.iconName)
     }

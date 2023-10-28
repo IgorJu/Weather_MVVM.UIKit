@@ -15,12 +15,17 @@ final class HourlyWeatherViewModel {
     }
     
     var time: String {
-        hourWeather.dtTxt
+        DateTimeFormatter.formatTime(from: hourWeather.dtTxt)
     }
     
-    var temperature: String {
-        String(hourWeather.main.temp)
+    var minTemp: String {
+        String(hourWeather.main.tempMin)
     }
+    
+    var maxTemp: String {
+        String(hourWeather.main.tempMax)
+    }
+
     
     
     var iconName: String {

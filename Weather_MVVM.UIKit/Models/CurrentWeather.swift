@@ -10,7 +10,7 @@ import Foundation
 struct CurrentWeather: Codable {
     let cod: String
     let message, cnt: Int
-    let hourWeather: [HourWeather]
+    let list: [HourWeather]
     let city: City
 }
 

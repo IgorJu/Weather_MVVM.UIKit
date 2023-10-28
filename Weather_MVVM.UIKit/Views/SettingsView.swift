@@ -34,6 +34,8 @@ final class SettingsView: UIView {
         addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        backgroundColor = .clear
+        tableView.backgroundColor = .clear
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -64,6 +66,7 @@ extension SettingsView: UITableViewDelegate, UITableViewDataSource {
         if let viewModel {
             cell.textLabel?.text = viewModel.options[indexPath.row].title
         }
+        cell.backgroundColor = .clear
         
         return cell
     }

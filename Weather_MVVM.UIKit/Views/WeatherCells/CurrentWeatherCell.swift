@@ -31,6 +31,7 @@ final class CurrentWeatherCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .black
         return imageView
     }()
     
@@ -57,19 +58,17 @@ final class CurrentWeatherCell: UITableViewCell {
     
     private func addConstraints() {
         NSLayoutConstraint.activate([
-            tempLabel.topAnchor.constraint(equalTo: topAnchor),
-            tempLabel.leftAnchor.constraint(equalTo: leftAnchor),
-            tempLabel.rightAnchor.constraint(equalTo: rightAnchor),
+            cityLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            cityLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            icon.leftAnchor.constraint(equalTo: leftAnchor),
-            icon.topAnchor.constraint(equalTo: tempLabel.bottomAnchor),
-            icon.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 20),
+            tempLabel.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 20),
+            tempLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             
-            cityLabel.leftAnchor.constraint(equalTo: icon.leftAnchor, constant: 10),
-            cityLabel.topAnchor.constraint(equalTo: tempLabel.bottomAnchor),
-            cityLabel.rightAnchor.constraint(equalTo: rightAnchor),
-            cityLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 20)
-
+            
+            icon.leftAnchor.constraint(equalTo: tempLabel.rightAnchor, constant: 10),
+            icon.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 20),
+            icon.heightAnchor.constraint(equalToConstant: 30),
+            icon.widthAnchor.constraint(equalToConstant: 30)
             
         ])
     }    

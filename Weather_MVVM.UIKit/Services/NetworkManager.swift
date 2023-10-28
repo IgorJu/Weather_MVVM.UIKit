@@ -13,7 +13,7 @@ enum API {
     var url: URL {
         switch self {
         case .weatherURL(let city):
-            let apiKey = "380a13ab79f381d11c50c917b4dbb7cf" // Замените на ваш ключ API OpenWeatherMap
+            let apiKey = "380a13ab79f381d11c50c917b4dbb7cf"
             let urlString = "https://api.openweathermap.org/data/2.5/forecast?appid=\(apiKey)&q=\(city)&units=metric"
             return URL(string: urlString) ?? URL(fileURLWithPath: "")
         }

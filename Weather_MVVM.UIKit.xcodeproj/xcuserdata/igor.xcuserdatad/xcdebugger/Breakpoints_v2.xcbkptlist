@@ -39,32 +39,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7DDCE3EC-1446-4C5C-B8D5-93AB0BCEC011"
+            uuid = "FF1C061F-8536-481F-817C-DB995BD374DD"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Weather_MVVM.UIKit/ViewControllers/WeatherViewController.swift"
+            filePath = "Weather_MVVM.UIKit/Services/NetworkManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "fetch(_:from:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "DF71EA4E-DD57-4ADD-8A4D-8D34BEFE2ABE"
+            uuid = "B2C2D515-CDB6-4380-BDD8-BB630EA0C9D8"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Weather_MVVM.UIKit/ViewControllers/WeatherViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "updateViewModel()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

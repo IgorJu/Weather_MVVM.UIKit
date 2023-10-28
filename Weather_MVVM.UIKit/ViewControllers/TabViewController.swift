@@ -7,12 +7,11 @@
 
 import UIKit
 
-class TabViewController: UITabBarController {
+final class TabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let tab1 = WeatherViewController()
+                let tab1 = WeatherViewController()
         tab1.title = "Weather"
         
         let tab2 = SettingsViewController()
@@ -28,6 +27,8 @@ class TabViewController: UITabBarController {
             [nav1, nav2],
             animated: true
         )
+        
+
     }
     
 

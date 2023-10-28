@@ -6,50 +6,65 @@
 //
 
 import UIKit
+import Combine
 
 final class WeatherViewController: UIViewController {
-
+    
+    private var subscriptions = Set<AnyCancellable>()
+    
     private let tableView = UITableView()
     private let viewModel = CurrentWeatherViewModel()
     private var hourViewModels = [HourlyWeatherViewModel]()
     
     private let networkManager = NetworkManager.shared
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Установить прозрачность таб-бара
+        tabBarController?.tabBar.isTranslucent = true
+        
+        // Установить прозрачный цвет для таб-бара
+        tabBarController?.tabBar.backgroundColor = UIColor.clear
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupGradient()
         setTableView()
         setConstraints()
         viewModel.getLocation()
-        viewModel.weather?.bind({ weather in
-            self.fetchWeather(currentWeather: weather)
-        })
-        
+        updateViewModel()
     }
-
-    private func fetchWeather(currentWeather: CurrentWeather) {
-        
-        WeatherManager.shared.getCurrentWeather(completion: { [weak self] weather in
-            self?.viewModel.weather?.value = weather
-            self?.hourViewModels = weather.hourWeather.map { HourlyWeatherViewModel(hourWeather: $0) }
-       })
-
+    
+    private func updateViewModel() {
+        viewModel.weather
+            .sink { [weak self] weather in
+                DispatchQueue.main.async {
+                    self?.hourViewModels = weather?.list.map { HourlyWeatherViewModel(hourWeather: $0) } ?? []
+                    self?.tableView.reloadData()
+                }
+            }
+            .store(in: &subscriptions)
+        print(viewModel.city)
     }
+    
     private func setTableView() {
-         tableView.register(
-             CurrentWeatherCell.self,
-             forCellReuseIdentifier: CurrentWeatherCell.identifier
-         )
+        tableView.register(
+            CurrentWeatherCell.self,
+            forCellReuseIdentifier: CurrentWeatherCell.identifier
+        )
         tableView.register(
             HourlyWeatherCell.self,
             forCellReuseIdentifier: HourlyWeatherCell.identifier
         )
         tableView.translatesAutoresizingMaskIntoConstraints = false
-         tableView.backgroundColor = .clear
-         tableView.dataSource = self
-         tableView.delegate = self
+        tableView.backgroundColor = .clear
+        tableView.dataSource = self
+        tableView.delegate = self
         view.addSubview(tableView)
-     }
-
+    }
+    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -58,15 +73,19 @@ final class WeatherViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
-
+    
 }
 
 //MARK: - UiTableViewDataSource, UiTableViewDelegate
 extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return section == 0
         ? 1
-        : viewModel.weather?.value.hourWeather.count ?? 0
+        : viewModel.weather.value?.list.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -86,6 +105,18 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
             return cell
         }
         
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 150
+        } else {
+            return 90
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     

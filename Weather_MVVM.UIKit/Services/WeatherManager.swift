@@ -21,11 +21,10 @@ final class WeatherManager {
     func getCurrentWeather(completion: @escaping (CurrentWeather) -> Void) {
         NetworkManager.shared.fetch(
             CurrentWeather.self,
-            from: API.weatherURL(city: weather?.city.name ?? "London").url
+            from: API.weatherURL(city: weather?.city.name ?? "Toronto").url
         ) { result in
             switch result {
             case .success(let weather):
-                print(weather)
                 completion(weather)
             case .failure(let error):
                 print(error.localizedDescription)
