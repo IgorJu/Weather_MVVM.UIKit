@@ -17,9 +17,9 @@ final class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupGradient()
         primaryView.delegate = self
         setupView()
-       
     }
     
     
