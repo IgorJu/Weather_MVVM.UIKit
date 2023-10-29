@@ -17,19 +17,35 @@ final class HourlyWeatherViewModel {
     var time: String {
         DateTimeFormatter.formatTime(from: hourWeather.dtTxt)
     }
-    
-    var minTemp: String {
-        String(hourWeather.main.tempMin)
-    }
-    
-    var maxTemp: String {
-        String(hourWeather.main.tempMax)
+        
+    var temperature: String {
+        roundToIntAndString(hourWeather.main.temp)
     }
 
+    var visibility: String {
+        "⊚ Видимость \(hourWeather.visibility / 1000) км"
+    }
     
+    var windSpeed: String {
+        "Скорость ветра \(hourWeather.wind.speed) м/с"
+    }
     
     var iconName: String {
-        hourWeather.weather.first?.icon ?? ""
+        weatherImage()
     }
+    
+    private func weatherImage() -> String {
+        switch hourWeather.weather.first?.main {
+        case .clear:
+            return "sun.max.fill"
+        case .clouds:
+            return "cloud.fill"
+        case .rain:
+            return "cloud.rain.fill"
+        case .none:
+           return ""
+        }
+    }
+
     
 }

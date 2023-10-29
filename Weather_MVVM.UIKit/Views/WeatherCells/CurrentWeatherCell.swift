@@ -16,6 +16,7 @@ final class CurrentWeatherCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 42, weight: .medium)
+        label.textColor = .white
         return label
     }()
     
@@ -24,14 +25,25 @@ final class CurrentWeatherCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 24, weight: .regular)
+        label.textColor = .white
         return label
     }()
+    
+    private let feelsLikeLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 20, weight: .thin)
+        label.textColor = .white
+        return label
+    }()
+
 
     private let icon: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .black
+        imageView.tintColor = .white
         return imageView
     }()
     
@@ -43,6 +55,7 @@ final class CurrentWeatherCell: UITableViewCell {
         addSubview(tempLabel)
         addSubview(icon)
         addSubview(cityLabel)
+        addSubview(feelsLikeLabel)
         addConstraints()
     }
     
@@ -54,6 +67,7 @@ final class CurrentWeatherCell: UITableViewCell {
         icon.image = UIImage(systemName: viewModel.iconName)
         tempLabel.text = viewModel.temperature
         cityLabel.text = viewModel.city
+        feelsLikeLabel.text = viewModel.feelsLike
     }
     
     private func addConstraints() {
@@ -68,8 +82,10 @@ final class CurrentWeatherCell: UITableViewCell {
             icon.leftAnchor.constraint(equalTo: tempLabel.rightAnchor, constant: 10),
             icon.topAnchor.constraint(equalTo: cityLabel.bottomAnchor, constant: 20),
             icon.heightAnchor.constraint(equalToConstant: 30),
-            icon.widthAnchor.constraint(equalToConstant: 30)
-            
+            icon.widthAnchor.constraint(equalToConstant: 30),
+        
+          feelsLikeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+          feelsLikeLabel.topAnchor.constraint(equalTo: tempLabel.bottomAnchor, constant: 20)
         ])
     }    
 }

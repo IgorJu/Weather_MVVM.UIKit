@@ -17,7 +17,7 @@ final class DateTimeFormatter {
         }
 
         let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "HH"
+        timeFormatter.dateFormat = "dd.MM, HH:mm"
 
         return timeFormatter.string(from: date)
     }

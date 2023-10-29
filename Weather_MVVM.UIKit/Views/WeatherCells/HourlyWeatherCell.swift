@@ -11,22 +11,22 @@ final class HourlyWeatherCell: UITableViewCell {
     
     static var identifier: String { "\(Self.self)" }
     
-    private let minTempLabel: UILabel = {
+    private let visibility: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 24, weight: .medium)
+        label.font = .systemFont(ofSize: 16, weight: .light)
         label.textColor = .white
         return label
         
     }()
     
-    private let maxTempLabel: UILabel = {
+    private let tempLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 24, weight: .medium)
-        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 22, weight: .medium)
+        label.textColor = .white
         return label
     }()
 
@@ -35,14 +35,26 @@ final class HourlyWeatherCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 24, weight: .regular)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
+        label.textColor = .white
         return label
     }()
+    
+    private var speedWindLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16, weight: .light)
+        label.textColor = .white
+        return label
+    }()
+
 
     private let icon: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.tintColor = .white
         return imageView
     }()
 
@@ -59,37 +71,39 @@ final class HourlyWeatherCell: UITableViewCell {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            timeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20)
-        ])
+            timeLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 20),
         
-//        NSLayoutConstraint.activate([
-//            icon.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 10),
-//            icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-//            icon.widthAnchor.constraint(equalToConstant: 30),
-//            icon.heightAnchor.constraint(equalToConstant: 30)
-//        ])
+            icon.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 10),
+            icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            icon.widthAnchor.constraint(equalToConstant: 30),
+            icon.heightAnchor.constraint(equalToConstant: 30),
         
-        NSLayoutConstraint.activate([
-            minTempLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor , constant: 10),
-            minTempLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20)
-        ])
+            visibility.trailingAnchor.constraint(equalTo: trailingAnchor , constant: -10),
+            visibility.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            
+            speedWindLabel.trailingAnchor.constraint(equalTo: trailingAnchor , constant: -10),
+            speedWindLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10),
+
         
-        NSLayoutConstraint.activate([
-            maxTempLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -20),
-            maxTempLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20)
+            tempLabel.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: 15),
+            tempLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+            
+            
         ])
     }
     
     private func addSubviews() {
-        addSubview(minTempLabel)
+        addSubview(speedWindLabel)
+        addSubview(visibility)
         addSubview(timeLabel)
-        addSubview(maxTempLabel)
-        //addSubview(icon)
+        addSubview(tempLabel)
+        addSubview(icon)
     }
     
     func configure(with viewModel: HourlyWeatherViewModel) {
-        minTempLabel.text = viewModel.minTemp
-        maxTempLabel.text = viewModel.maxTemp
+        visibility.text = viewModel.visibility
+        speedWindLabel.text = viewModel.windSpeed
+        tempLabel.text = viewModel.temperature
         timeLabel.text = viewModel.time
         icon.image = UIImage(systemName: viewModel.iconName)
     }

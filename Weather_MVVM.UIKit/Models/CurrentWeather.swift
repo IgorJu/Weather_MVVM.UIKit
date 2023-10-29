@@ -37,7 +37,6 @@ struct HourWeather: Codable {
     let wind: Wind
     let visibility: Int
     let pop: Double
-    //let sys: Sys
     let dtTxt: String
     let rain: Rain?
 
@@ -80,16 +79,6 @@ struct Rain: Codable {
         case the3H = "3h"
     }
 }
-
-//// MARK: - Sys
-//struct Sys: Codable {
-//    let pod: Pod
-//}
-//
-//enum Pod: String, Codable {
-//    case d = "d"
-//    case n = "n"
-//}
 
 // MARK: - WeatherElement
 struct WeatherElement: Codable {

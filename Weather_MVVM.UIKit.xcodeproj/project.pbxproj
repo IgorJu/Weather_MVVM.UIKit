@@ -24,6 +24,7 @@
 		7866FA632AE407DA0060FBEE /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7866FA622AE407DA0060FBEE /* TabViewController.swift */; };
 		7866FA652AE40C870060FBEE /* CurrentWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7866FA642AE40C870060FBEE /* CurrentWeatherCell.swift */; };
 		7866FA682AE40CBA0060FBEE /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7866FA672AE40CBA0060FBEE /* SettingsView.swift */; };
+		7887500B2AEEADE8002B3BA2 /* TemperatureFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7887500A2AEEADE8002B3BA2 /* TemperatureFormatter.swift */; };
 		78BA03F32AE80089002E9DF1 /* SettingsViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA03F22AE80089002E9DF1 /* SettingsViewViewModel.swift */; };
 		78BA03FD2AE82221002E9DF1 /* HourlyWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA03FC2AE82221002E9DF1 /* HourlyWeatherCell.swift */; };
 /* End PBXBuildFile section */
@@ -48,6 +49,7 @@
 		7866FA622AE407DA0060FBEE /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		7866FA642AE40C870060FBEE /* CurrentWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCell.swift; sourceTree = "<group>"; };
 		7866FA672AE40CBA0060FBEE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		7887500A2AEEADE8002B3BA2 /* TemperatureFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureFormatter.swift; sourceTree = "<group>"; };
 		78BA03F22AE80089002E9DF1 /* SettingsViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewViewModel.swift; sourceTree = "<group>"; };
 		78BA03FC2AE82221002E9DF1 /* HourlyWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyWeatherCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -182,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				783D615C2AEAA3DB0077A9C6 /* DateTimeFormatter.swift */,
+				7887500A2AEEADE8002B3BA2 /* TemperatureFormatter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				78BA03F32AE80089002E9DF1 /* SettingsViewViewModel.swift in Sources */,
 				7866FA442AE400DE0060FBEE /* WeatherViewController.swift in Sources */,
 				7866FA652AE40C870060FBEE /* CurrentWeatherCell.swift in Sources */,
+				7887500B2AEEADE8002B3BA2 /* TemperatureFormatter.swift in Sources */,
 				7810053F2AED68AE00C417C9 /* Extension + UIViewController.swift in Sources */,
 				7866FA5F2AE406EF0060FBEE /* WeatherManager.swift in Sources */,
 				7866FA5B2AE406510060FBEE /* LocationManager.swift in Sources */,
