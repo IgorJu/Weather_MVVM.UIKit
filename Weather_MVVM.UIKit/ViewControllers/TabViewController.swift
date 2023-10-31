@@ -7,21 +7,35 @@
 
 import UIKit
 
+private enum tabBarConstants {
+    static let weather = "Weather"
+    static let cities = "Cities"
+    static let iconWeather = "cloud.sun"
+    static let iconCity = "gear"
+}
+
 final class TabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
                 let tab1 = WeatherViewController()
-        tab1.title = "Weather"
+        tab1.title = tabBarConstants.weather
         
-        let tab2 = SettingsViewController()
-        tab2.title = "Settings"
+        let tab2 = CityListViewController()
+        tab2.title = tabBarConstants.cities
         
         let nav1 = UINavigationController(rootViewController: tab1)
         let nav2 = UINavigationController(rootViewController: tab2)
         
-        nav1.tabBarItem = UITabBarItem(title: "Weather", image: UIImage(systemName: "cloud.sun"), tag: 1)
-        nav2.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 2)
+        nav1.tabBarItem = UITabBarItem(
+            title: tabBarConstants.weather,
+            image: UIImage(systemName: tabBarConstants.iconWeather),
+            tag: 1
+        )
+        nav2.tabBarItem = UITabBarItem(
+            title: tabBarConstants.cities,
+            image: UIImage(systemName: tabBarConstants.iconCity),
+            tag: 2)
         
         setViewControllers(
             [nav1, nav2],

@@ -7,6 +7,11 @@
 
 import Foundation
 
+private enum weatherStrings {
+    static let visibility = "⊚ Видимость"
+    static let windSpeed = "Скорость ветра"
+}
+
 final class HourlyWeatherViewModel {
     private let hourWeather: HourWeather
     
@@ -23,11 +28,11 @@ final class HourlyWeatherViewModel {
     }
 
     var visibility: String {
-        "⊚ Видимость \(hourWeather.visibility / 1000) км"
+        "\(weatherStrings.visibility) \(hourWeather.visibility / 1000) км"
     }
     
     var windSpeed: String {
-        "Скорость ветра \(hourWeather.wind.speed) м/с"
+        "\(weatherStrings.windSpeed) \(hourWeather.wind.speed) м/с"
     }
     
     var iconName: String {
@@ -37,13 +42,13 @@ final class HourlyWeatherViewModel {
     private func weatherImage() -> String {
         switch hourWeather.weather.first?.main {
         case .clear:
-            return "sun.max.fill"
+            return WeatherImages.sun
         case .clouds:
-            return "cloud.fill"
+            return WeatherImages.cloud
         case .rain:
-            return "cloud.rain.fill"
+            return WeatherImages.rain
         case .none:
-           return ""
+           return String()
         }
     }
 

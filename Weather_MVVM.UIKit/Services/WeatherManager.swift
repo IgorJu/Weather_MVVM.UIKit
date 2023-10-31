@@ -11,17 +11,18 @@ import CoreLocation
 
 final class WeatherManager {
     
+    //let city: String
     private var weather: CurrentWeather?
     static let shared = WeatherManager()
-
+        
     private init() {
         
     }
     
-    func getCurrentWeather(completion: @escaping (CurrentWeather) -> Void) {
+    func getCurrentWeather(_ cityName: String, completion: @escaping (CurrentWeather) -> Void) {
         NetworkManager.shared.fetch(
             CurrentWeather.self,
-            from: API.weatherURL(city: weather?.city.name ?? "Toronto").url
+            from: API.cityURL(city: cityName).url
         ) { result in
             switch result {
             case .success(let weather):
@@ -31,5 +32,19 @@ final class WeatherManager {
             }
         }
     }
+    
+    func getCurrentWeatherByCoordinates(_ lat: Double, _ lon: Double, completion: @escaping (CurrentWeather) -> Void) {
+           NetworkManager.shared.fetch(
+               CurrentWeather.self,
+               from: API.coordURL(lat: String(lat), lon: String(lon)).url
+           ) { result in
+               switch result {
+                   case .success(let weather):
+                       completion(weather)
+                   case .failure(let error):
+                       print(error.localizedDescription)
+               }
+           }
+       }
     
 }

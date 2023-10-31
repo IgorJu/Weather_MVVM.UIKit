@@ -12,7 +12,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
     
     
-    private var location: CLLocation? {
+    var location: CLLocation? {
         didSet {
             guard let location else { return }
             locationFetchCompletion?(location)

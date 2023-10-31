@@ -13,18 +13,18 @@ final class WeatherViewController: UIViewController {
     private var subscriptions = Set<AnyCancellable>()
     
     private let tableView = UITableView()
-    private let viewModel = CurrentWeatherViewModel()
+    let viewModel = CurrentWeatherViewModel()
     private var hourViewModels = [HourlyWeatherViewModel]()
     
     private let networkManager = NetworkManager.shared
+    private let locationManager = LocationManager.shared
+    
+    var selectedCity: CityS?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Установить прозрачность таб-бара
         tabBarController?.tabBar.isTranslucent = true
-        
-        // Установить прозрачный цвет для таб-бара
         tabBarController?.tabBar.backgroundColor = UIColor.clear
     }
     
@@ -33,11 +33,11 @@ final class WeatherViewController: UIViewController {
         setupGradient()
         setTableView()
         setConstraints()
-        viewModel.getLocation()
-        updateViewModel()
+        getLocation()
+        
     }
     
-    private func updateViewModel() {
+    private func getLocation() {
         viewModel.weather
             .sink { [weak self] weather in
                 DispatchQueue.main.async {
@@ -46,7 +46,11 @@ final class WeatherViewController: UIViewController {
                 }
             }
             .store(in: &subscriptions)
-        print(viewModel.city)
+//        guard let location = locationManager.location?.coordinate else { return }
+//        viewModel.getWeatherBylocation(location.latitude, location.longitude)
+        guard let selectedCity = selectedCity else { return }
+               viewModel.getWeatherByCity(selectedCity.name)
+        
     }
     
     private func setTableView() {

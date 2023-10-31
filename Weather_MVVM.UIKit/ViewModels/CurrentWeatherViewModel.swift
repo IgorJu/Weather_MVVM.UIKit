@@ -5,9 +5,9 @@
 //  Created by Igor on 25.10.2023.
 //
 
-import Foundation
 import Combine
 import UIKit
+
 
 final class CurrentWeatherViewModel {
     
@@ -35,23 +35,35 @@ final class CurrentWeatherViewModel {
     private func weatherImage() -> String {
         switch weather.value?.list.first?.weather.first?.main {
         case .clear:
-            return "sun.max"
+            return WeatherImages.sun
         case .clouds:
-            return "cloud"
+            return WeatherImages.cloud
         case .rain:
-            return "cloud.rain"
+            return WeatherImages.rain
         case .none:
-           return ""
+            return String()
         }
     }
     
-    func getLocation() {
+    func getWeatherByCity(_ cityName: String) {
         LocationManager.shared.getCurrentLocation { [weak self] location in
-            print(location)
-            self?.weatherManager.getCurrentWeather { [weak self] weather in
+            
+            self?.weatherManager.getCurrentWeather(cityName) { [weak self] weather in
+                self?.weather.send(weather)
+            }
+        }
+        
+    }
+    
+    func getWeatherBylocation(_ lat: Double, _ lon: Double) {
+        LocationManager.shared.getCurrentLocation { [weak self] location in
+            
+            self?.weatherManager.getCurrentWeatherByCoordinates(
+                location.coordinate.latitude,
+                location.coordinate.longitude
+            ) { [weak self] weather in
                 self?.weather.send(weather)
             }
         }
     }
-    
 }

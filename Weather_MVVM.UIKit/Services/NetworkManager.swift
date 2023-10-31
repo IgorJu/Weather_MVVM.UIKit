@@ -8,14 +8,20 @@
 import Foundation
 
 enum API {
-    case weatherURL(city: String)
-    
+    case cityURL(city: String)
+    case coordURL(lat: String, lon: String)
     var url: URL {
         switch self {
-        case .weatherURL(let city):
+        case .cityURL(let city):
             let apiKey = "380a13ab79f381d11c50c917b4dbb7cf"
             let urlString = "https://api.openweathermap.org/data/2.5/forecast?appid=\(apiKey)&q=\(city)&units=metric"
             return URL(string: urlString) ?? URL(fileURLWithPath: "")
+            
+        case .coordURL(let lat, let lon):
+            let apiKey = "380a13ab79f381d11c50c917b4dbb7cf"
+            let urlString = "https://api.openweathermap.org/data/2.5/forecast?appid=\(apiKey)&lat=\(lat)&lon=\(lon)&units=metric"
+            return URL(string: urlString) ?? URL(fileURLWithPath: "")
+
         }
     }
 }
