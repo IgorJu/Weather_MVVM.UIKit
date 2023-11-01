@@ -15,7 +15,7 @@ final class CityListViewController: UIViewController {
     private let searchBar = UITextField()
     
     private var searchResults: [City] = []
-    private var addedCities: [City] = []
+    private var existedCities: [City] = []
     
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -23,18 +23,14 @@ final class CityListViewController: UIViewController {
         return tableView
     }()
     
-    private let storageManager = StorageManager()
+    private let storageManager = StorageManager.shared
     
     //MARK: - Lifecycle
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        fetchCityList()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupGradient()
-        //fetchCityList()
+        fetchCityList()
         setSearchBar()
         setupTableView()
     }
@@ -42,10 +38,16 @@ final class CityListViewController: UIViewController {
     //MARK: - Flow
     
     private func fetchCityList() {
-        addedCities = viewModel.loadCities()
-        tableView.reloadData()
+        DispatchQueue.global().async {
+            if let loadedCities = self.storageManager.loadCities() {
+                DispatchQueue.main.async {
+                    self.existedCities = loadedCities
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
-    
+
     private func setSearchBar() {
         searchBar.placeholder = "Поиск городов"
         searchBar.textColor = .white
@@ -65,7 +67,7 @@ final class CityListViewController: UIViewController {
     @objc private func searchBarTextChanged(_ textField: UITextField) {
         guard let searchText = textField.text, !searchText.isEmpty else { return }
         searchResults = viewModel.searchCity(withName: searchText)
-        addedCities = viewModel.loadCities()
+        
         tableView.reloadData()
     }
         
@@ -86,10 +88,11 @@ final class CityListViewController: UIViewController {
     
     private func addCity(_ city: City) {
         viewModel.addCity(city)
-        addedCities.append(city)
+        existedCities = viewModel.loadCities()
+        existedCities.append(city)
         searchBar.text = ""
         
-        searchResults = addedCities.compactMap { addedCity in
+        searchResults = existedCities.compactMap { addedCity in
             viewModel.cities.first(where: { $0.name == addedCity.name })
         }
         
@@ -116,8 +119,6 @@ extension CityListViewController: UITableViewDataSource, UITableViewDelegate {
             withIdentifier: CityCell.identifier,
             for: indexPath
         ) as? CityCell else { return UITableViewCell() }
-        
-        searchResults = viewModel.loadCities()
         
         cell.configure(city: searchResults[indexPath.row]) { [weak self] city in
             self?.addCity(city)

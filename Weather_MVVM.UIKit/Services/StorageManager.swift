@@ -6,14 +6,18 @@
 //
 
 import Foundation
+//
+//protocol IStorageManager {
+//    func saveCity(_ city: City)
+//
+//    func loadCities() -> [City]?
+//}
 
-protocol IStorageManager {
-    func saveCities(_ cities: [City])
+final class StorageManager {
     
-    func loadCities() -> [City]?
-}
-
-final class StorageManager: IStorageManager {
+    static let shared = StorageManager()
+    
+    private init() {}
     
     func saveCities(_ cities: [City]) {
         UserDefaults.standard.set(encodable: cities, forKey: .cities)
@@ -21,12 +25,12 @@ final class StorageManager: IStorageManager {
     
     func loadCities() -> [City]? {
         guard let cities = UserDefaults.standard.object([City].self, forKey: .cities) else { return []}
-                return cities
+        return cities
     }
-
+    
 }
-    
-    
+
+
 extension UserDefaults {
     func set<T: Encodable>(encodable: T, forKey key: String) {
         if let data = try? JSONEncoder().encode(encodable) {
@@ -39,6 +43,6 @@ extension UserDefaults {
            let value = try? JSONDecoder().decode(type, from: data) {
             return value
         }
-          return nil
+        return nil
     }
 }

@@ -10,21 +10,22 @@ import Foundation
 final class CitiesViewModel {
     
     var cities: [City] = []
-    private let storageManager = StorageManager()
+    var existedCities: [City] = []
+    private let storageManager = StorageManager.shared
     var isSearchCities: Bool = false
     
     
     func addCity(_ city: City) {
         WeatherManager.shared.getCurrentWeather(city.name) { [weak self] weather in
             let newCity = City(name: city.name)
-            var citiesToSave = self?.storageManager.loadCities() ?? []
-            citiesToSave.append(newCity)
-            self?.storageManager.saveCities(citiesToSave)
+            self?.existedCities.append(newCity)
+            self?.storageManager.saveCities(self?.existedCities ?? [])
         }
     }
     
     func loadCities() -> [City] {
-        return StorageManager().loadCities() ?? []
+        existedCities = storageManager.loadCities() ?? []
+        return existedCities
     }
     
     func loadCitiesFromJSON() {
