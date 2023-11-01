@@ -122,6 +122,8 @@
 		7866FA532AE401210060FBEE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				78E85D452AF1444C0061FA89 /* WeatherStringImages.swift */,
+				78E85D472AF145CC0061FA89 /* Sizes.swift */,
 				7883E12B2AEFDF5A00C31107 /* citylist.json */,
 				7866FA482AE400DF0060FBEE /* Assets.xcassets */,
 			);
@@ -184,8 +186,6 @@
 			children = (
 				783D615C2AEAA3DB0077A9C6 /* DateTimeFormatter.swift */,
 				7887500A2AEEADE8002B3BA2 /* TemperatureFormatter.swift */,
-				78E85D452AF1444C0061FA89 /* WeatherStringImages.swift */,
-				78E85D472AF145CC0061FA89 /* Sizes.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
