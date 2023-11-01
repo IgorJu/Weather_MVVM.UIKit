@@ -9,30 +9,31 @@ import Foundation
 
 final class CitiesViewModel {
     
-    var cities: [CityS] = []
+    var cities: [City] = []
     
     func addCity(_ cityName: String) {
         WeatherManager.shared.getCurrentWeather(cityName) { [weak self] weather in
-            let newCity = CityS(name: cityName)
+            let newCity = City(name: cityName)
             self?.cities.append(newCity)
         }
     }
     
     func loadCitiesFromJSON() {
-           if let path = Bundle.main.path(forResource: "citylist", ofType: "json"),
-              let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-               let decoder = JSONDecoder()
-               do {
-                   cities = try decoder.decode([CityS].self, from: data)
-               } catch {
-                   print("Error decoding JSON: \(error)")
-               }
-           }
-       }
-       
-       func searchCity(withName cityName: String) -> [CityS] {
-           return cities.filter { $0.name.lowercased().contains(cityName.lowercased()) }
-       }
+        if let path = Bundle.main.path(forResource: "citylist", ofType: "json"),
+           let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
+            let decoder = JSONDecoder()
+            do {
+                cities = try decoder.decode([City].self, from: data)
+            } catch {
+                print("Error decoding JSON: \(error)")
+            }
+        }
+    }
+    
+    func searchCity(withName cityName: String) -> [City] {
+        return cities.filter { $0.name.lowercased().contains(cityName.lowercased()) }
+    }
+    
 }
 
 

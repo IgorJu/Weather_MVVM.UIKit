@@ -11,20 +11,12 @@ import Foundation
 final class LocationManager: NSObject, CLLocationManagerDelegate {
     private let manager = CLLocationManager()
     
-    
-    var location: CLLocation? {
-        didSet {
-            guard let location else { return }
-            locationFetchCompletion?(location)
-        }
-    }
-    
     private var locationFetchCompletion: ((CLLocation) -> Void)?
     
     
     static let shared = LocationManager()
     
-    public func getCurrentLocation(completion: @escaping(CLLocation) -> Void) {
+     func getCurrentLocation(completion: @escaping(CLLocation) -> Void) {
         
         self.locationFetchCompletion = completion
         
@@ -36,7 +28,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         
-        self.location = location
+        locationFetchCompletion?(location)
         manager.stopUpdatingLocation()
     }
     

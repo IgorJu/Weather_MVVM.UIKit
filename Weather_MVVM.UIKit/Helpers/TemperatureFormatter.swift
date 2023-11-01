@@ -8,7 +8,6 @@
 import Foundation
 
 func roundToIntAndString(_ temperature: Double) -> String {
-        String(Int((round(temperature)))) + "°"
-        
-    }
+    String(Int((round(temperature)))) + "°"
+}
 

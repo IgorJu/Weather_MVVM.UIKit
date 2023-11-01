@@ -9,6 +9,8 @@ import UIKit
 
 final class CurrentWeatherCell: UITableViewCell {
     
+    //MARK: - Properties
+    
     static var identifier: String { "\(Self.self)" }
 
     private let tempLabel: UILabel = {
@@ -47,6 +49,7 @@ final class CurrentWeatherCell: UITableViewCell {
         return imageView
     }()
     
+    //MARK: - Override methods
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -63,6 +66,7 @@ final class CurrentWeatherCell: UITableViewCell {
         fatalError()
     }
     
+    //MARK: - Flow
     func configure(with viewModel: CurrentWeatherViewModel) {
         icon.image = UIImage(systemName: viewModel.iconName)
         tempLabel.text = viewModel.temperature

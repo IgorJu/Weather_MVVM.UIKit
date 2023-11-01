@@ -8,17 +8,21 @@
 import UIKit
 
 private enum tabBarConstants {
-    static let weather = "Weather"
-    static let cities = "Cities"
+    static let weather = "Weather Geo"
+    static let cities = "Weather in Cities"
     static let iconWeather = "cloud.sun"
-    static let iconCity = "gear"
+    static let iconCity = "globe"
 }
 
 final class TabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-                let tab1 = WeatherViewController()
+        setTabBar()
+    }
+    
+    private func setTabBar() {
+        let tab1 = WeatherViewController()
         tab1.title = tabBarConstants.weather
         
         let tab2 = CityListViewController()
@@ -41,10 +45,5 @@ final class TabViewController: UITabBarController {
             [nav1, nav2],
             animated: true
         )
-        
-
     }
-    
-
-
 }

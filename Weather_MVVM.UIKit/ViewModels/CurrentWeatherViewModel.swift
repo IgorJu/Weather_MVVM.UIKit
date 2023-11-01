@@ -47,7 +47,6 @@ final class CurrentWeatherViewModel {
     
     func getWeatherByCity(_ cityName: String) {
         LocationManager.shared.getCurrentLocation { [weak self] location in
-            
             self?.weatherManager.getCurrentWeather(cityName) { [weak self] weather in
                 self?.weather.send(weather)
             }
@@ -55,12 +54,12 @@ final class CurrentWeatherViewModel {
         
     }
     
-    func getWeatherBylocation(_ lat: Double, _ lon: Double) {
+    func getWeatherBylocation() {
         LocationManager.shared.getCurrentLocation { [weak self] location in
             
             self?.weatherManager.getCurrentWeatherByCoordinates(
-                location.coordinate.latitude,
-                location.coordinate.longitude
+                String(location.coordinate.latitude),
+                String(location.coordinate.longitude)
             ) { [weak self] weather in
                 self?.weather.send(weather)
             }

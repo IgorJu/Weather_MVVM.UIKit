@@ -10,18 +10,20 @@ import Foundation
 enum API {
     case cityURL(city: String)
     case coordURL(lat: String, lon: String)
+    
     var url: URL {
         switch self {
         case .cityURL(let city):
             let apiKey = "380a13ab79f381d11c50c917b4dbb7cf"
             let urlString = "https://api.openweathermap.org/data/2.5/forecast?appid=\(apiKey)&q=\(city)&units=metric"
+            
             return URL(string: urlString) ?? URL(fileURLWithPath: "")
             
         case .coordURL(let lat, let lon):
             let apiKey = "380a13ab79f381d11c50c917b4dbb7cf"
             let urlString = "https://api.openweathermap.org/data/2.5/forecast?appid=\(apiKey)&lat=\(lat)&lon=\(lon)&units=metric"
+            
             return URL(string: urlString) ?? URL(fileURLWithPath: "")
-
         }
     }
 }
@@ -32,6 +34,8 @@ enum NetworkError: Error {
     case decodingError
 }
 
+//MARK: - NetworkManager
+
 final class NetworkManager {
     
     static let shared = NetworkManager()
@@ -41,23 +45,23 @@ final class NetworkManager {
     //MARK: - Fetch Methods
     
     func fetch<T: Decodable>(_ type: T.Type, from url: URL, completion: @escaping(Result<T, NetworkError>) -> Void) {
-            URLSession.shared.dataTask(with: url) { data, _, error in
-                guard let data else {
-                    completion(.failure(.noData))
-                    print(error?.localizedDescription ?? "No error Description")
-                    return
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data else {
+                completion(.failure(.noData))
+                print(error?.localizedDescription ?? "No error Description")
+                return
+            }
+            
+            do {
+                let decoder = JSONDecoder()
+                let dataModel = try decoder.decode(T.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(dataModel))
                 }
-                
-                do {
-                    let decoder = JSONDecoder()
-                    let dataModel = try decoder.decode(T.self, from: data)
-                    DispatchQueue.main.async {
-                        completion(.success(dataModel))
-                    }
-                } catch {
-                    completion(.failure(.decodingError))
-                }
-            }.resume()
-        }
+            } catch {
+                completion(.failure(.decodingError))
+            }
+        }.resume()
+    }
 }
 

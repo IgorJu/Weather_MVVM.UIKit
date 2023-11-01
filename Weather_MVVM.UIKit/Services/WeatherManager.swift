@@ -6,18 +6,12 @@
 //
 
 import Foundation
-import WeatherKit
-import CoreLocation
 
 final class WeatherManager {
-    
-    //let city: String
-    private var weather: CurrentWeather?
+
     static let shared = WeatherManager()
         
-    private init() {
-        
-    }
+    private init() {}
     
     func getCurrentWeather(_ cityName: String, completion: @escaping (CurrentWeather) -> Void) {
         NetworkManager.shared.fetch(
@@ -33,10 +27,10 @@ final class WeatherManager {
         }
     }
     
-    func getCurrentWeatherByCoordinates(_ lat: Double, _ lon: Double, completion: @escaping (CurrentWeather) -> Void) {
+    func getCurrentWeatherByCoordinates(_ lat: String, _ lon: String, completion: @escaping (CurrentWeather) -> Void) {
            NetworkManager.shared.fetch(
                CurrentWeather.self,
-               from: API.coordURL(lat: String(lat), lon: String(lon)).url
+               from: API.coordURL(lat: lat, lon: lon).url
            ) { result in
                switch result {
                    case .success(let weather):

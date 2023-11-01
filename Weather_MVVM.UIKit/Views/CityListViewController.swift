@@ -14,7 +14,7 @@ final class CityListViewController: UIViewController {
     private let viewModel = CitiesViewModel()
     private let searchBar = UITextField()
     
-    private var searchResults: [CityS] = []
+    private var searchResults: [City] = []
     private var addedCities: [String] = []
     
     private let tableView: UITableView = {
@@ -28,12 +28,17 @@ final class CityListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupGradient()
-        viewModel.loadCitiesFromJSON()
+        fetchCityList()
         setSearchBar()
-        setupView()
+        setupTableView()
     }
     
     //MARK: - Flow
+    private func fetchCityList() {
+        DispatchQueue.global().async {
+            self.viewModel.loadCitiesFromJSON()
+        }
+    }
     
     private func setSearchBar() {
         searchBar.placeholder = "Поиск городов"
@@ -53,8 +58,10 @@ final class CityListViewController: UIViewController {
     
     @objc private func searchBarTextChanged(_ textField: UITextField) {
         guard let searchText = textField.text, !searchText.isEmpty else {
-            viewModel.loadCitiesFromJSON()
-            searchResults = viewModel.cities // Обновление searchResults при отсутствии текста в поле поиска
+            DispatchQueue.global().async {
+                self.viewModel.loadCitiesFromJSON()
+            }
+            searchResults = viewModel.cities
             tableView.reloadData()
             return
         }
@@ -63,7 +70,7 @@ final class CityListViewController: UIViewController {
         tableView.reloadData()
     }
     
-    private func setupView() {
+    private func setupTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
@@ -83,7 +90,6 @@ final class CityListViewController: UIViewController {
         addedCities.append(cityName)
         searchBar.text = ""
         
-        // Обновление searchResults для отображения только добавленных городов
         searchResults = addedCities.compactMap { addedCity in
             viewModel.cities.first(where: { $0.name == addedCity })
         }
@@ -107,6 +113,7 @@ extension CityListViewController: UITableViewDataSource, UITableViewDelegate {
         
         cell.configure(cityName: searchResults[indexPath.row].name) { [weak self] cityName in
             self?.addCity(cityName)
+            tableView.reloadData()
         }
         return cell
     }
@@ -116,7 +123,7 @@ extension CityListViewController: UITableViewDataSource, UITableViewDelegate {
         showWeather(for: selectedCity)
     }
     
-    func showWeather(for city: CityS) {
+    func showWeather(for city: City) {
         let weatherVC = WeatherViewController()
         weatherVC.selectedCity = city
         navigationController?.pushViewController(weatherVC, animated: true)

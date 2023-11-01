@@ -8,25 +8,38 @@
 import UIKit
 
 final class CityCell: UITableViewCell {
+    
+    //MARK: - Properties
+    
     static var identifier: String { "\(Self.self)" }
-
     
     private let cityNameLabel = UILabel()
     private let addButton = UIButton()
     private var addAction: (() -> Void)?
     
     
+    //MARK: - Override methods
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupViewCell()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Flow
+    
+    private func setupViewCell() {
         backgroundColor = .clear
         cityNameLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(cityNameLabel)
         
-        addButton.setTitle("Добавить", for: .normal)
+        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         contentView.addSubview(addButton)
-        
         
         NSLayoutConstraint.activate([
             cityNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Sizes.small),
@@ -36,10 +49,6 @@ final class CityCell: UITableViewCell {
             addButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             addButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Sizes.small)
         ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     @objc func addButtonTapped() {
@@ -52,6 +61,6 @@ final class CityCell: UITableViewCell {
             completion(cityName)
         }
     }
-
+    
 }
 

@@ -8,33 +8,54 @@
 import UIKit
 import Combine
 
+private enum Heights {
+    static let small = 70.0
+    static let large = 200.0
+}
+
 final class WeatherViewController: UIViewController {
+    
+    //MARK: - Properties
     
     private var subscriptions = Set<AnyCancellable>()
     
     private let tableView = UITableView()
-    let viewModel = CurrentWeatherViewModel()
-    private var hourViewModels = [HourlyWeatherViewModel]()
+    private var spinnerView = UIActivityIndicatorView()
+    
+    private var hourViewModels: [HourlyWeatherViewModel] = []
     
     private let networkManager = NetworkManager.shared
     private let locationManager = LocationManager.shared
     
-    var selectedCity: CityS?
+    let viewModel = CurrentWeatherViewModel()
+    var selectedCity: City?
+    
+    //MARK: - Lifecycle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        tabBarController?.tabBar.isTranslucent = true
-        tabBarController?.tabBar.backgroundColor = UIColor.clear
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.tabBar.isTranslucent = true
+        tabBarController?.tabBar.backgroundColor = UIColor.clear
         setupGradient()
         setTableView()
+        showSpinner(in: view)
         setConstraints()
         getLocation()
-        
+    }
+    
+    //MARK: - Flow
+    
+    private func showSpinner(in view: UIView) {
+        spinnerView = UIActivityIndicatorView(style: .large)
+        spinnerView.color = .white
+        spinnerView.startAnimating()
+        spinnerView.center = view.center
+        spinnerView.hidesWhenStopped = true
+        view.addSubview(spinnerView)
     }
     
     private func getLocation() {
@@ -46,11 +67,21 @@ final class WeatherViewController: UIViewController {
                 }
             }
             .store(in: &subscriptions)
-//        guard let location = locationManager.location?.coordinate else { return }
-//        viewModel.getWeatherBylocation(location.latitude, location.longitude)
-        guard let selectedCity = selectedCity else { return }
-               viewModel.getWeatherByCity(selectedCity.name)
         
+        DispatchQueue.global().async {
+            
+            if self.selectedCity == nil {
+                self.viewModel.getWeatherBylocation()
+            } else {
+                guard let selectedCity = self.selectedCity else { return }
+                self.viewModel.getWeatherByCity(selectedCity.name)
+            }
+            
+            DispatchQueue.main.async {
+                self.spinnerView.stopAnimating()
+            }
+            
+        }
     }
     
     private func setTableView() {
@@ -99,6 +130,7 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
                 for: indexPath
             ) as? CurrentWeatherCell else { return UITableViewCell() }
             cell.configure(with: viewModel)
+            
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(
@@ -106,23 +138,22 @@ extension WeatherViewController: UITableViewDataSource, UITableViewDelegate {
                 for: indexPath
             ) as? HourlyWeatherCell else { return UITableViewCell() }
             cell.configure(with: hourViewModels[indexPath.row])
+            
             return cell
         }
-        
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 200
+            return Heights.large
         } else {
-            return 70
+            return Heights.small
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
     
 }
 

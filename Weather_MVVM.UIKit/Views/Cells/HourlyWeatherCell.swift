@@ -14,6 +14,8 @@ private enum FontConstants {
 
 final class HourlyWeatherCell: UITableViewCell {
     
+    //MARK: - Properties
+    
     static var identifier: String { "\(Self.self)" }
     
     private let visibility: UILabel = {
@@ -35,7 +37,6 @@ final class HourlyWeatherCell: UITableViewCell {
         return label
     }()
 
-    
     private var timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -53,8 +54,7 @@ final class HourlyWeatherCell: UITableViewCell {
         label.textColor = .white
         return label
     }()
-
-
+    
     private let icon: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -63,6 +63,8 @@ final class HourlyWeatherCell: UITableViewCell {
         return imageView
     }()
 
+    //MARK: - Override methods
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubviews()
@@ -73,6 +75,9 @@ final class HourlyWeatherCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError()
     }
+    
+    //MARK: - Flow
+    
     private func setConstraints() {
         NSLayoutConstraint.activate([
             timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: Sizes.regular),
@@ -89,11 +94,8 @@ final class HourlyWeatherCell: UITableViewCell {
             speedWindLabel.trailingAnchor.constraint(equalTo: trailingAnchor , constant: -Sizes.small),
             speedWindLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Sizes.small),
 
-        
             tempLabel.leftAnchor.constraint(equalTo: icon.rightAnchor, constant: Sizes.medium),
             tempLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
-            
-            
         ])
     }
     
@@ -112,7 +114,7 @@ final class HourlyWeatherCell: UITableViewCell {
         timeLabel.text = viewModel.time
         icon.image = UIImage(systemName: viewModel.iconName)
     }
-
+    
 }
 
 

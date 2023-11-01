@@ -23,7 +23,6 @@
 		7866FA612AE407950060FBEE /* CityListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7866FA602AE407950060FBEE /* CityListViewController.swift */; };
 		7866FA632AE407DA0060FBEE /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7866FA622AE407DA0060FBEE /* TabViewController.swift */; };
 		7866FA652AE40C870060FBEE /* CurrentWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7866FA642AE40C870060FBEE /* CurrentWeatherCell.swift */; };
-		7883E1282AEFCC2D00C31107 /* Cities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7883E1272AEFCC2D00C31107 /* Cities.swift */; };
 		7883E12A2AEFCCB200C31107 /* CitiesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7883E1292AEFCCB200C31107 /* CitiesViewModel.swift */; };
 		7883E12C2AEFDF5A00C31107 /* citylist.json in Resources */ = {isa = PBXBuildFile; fileRef = 7883E12B2AEFDF5A00C31107 /* citylist.json */; };
 		7887500B2AEEADE8002B3BA2 /* TemperatureFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7887500A2AEEADE8002B3BA2 /* TemperatureFormatter.swift */; };
@@ -52,7 +51,6 @@
 		7866FA602AE407950060FBEE /* CityListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityListViewController.swift; sourceTree = "<group>"; };
 		7866FA622AE407DA0060FBEE /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		7866FA642AE40C870060FBEE /* CurrentWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCell.swift; sourceTree = "<group>"; };
-		7883E1272AEFCC2D00C31107 /* Cities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cities.swift; sourceTree = "<group>"; };
 		7883E1292AEFCCB200C31107 /* CitiesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesViewModel.swift; sourceTree = "<group>"; };
 		7883E12B2AEFDF5A00C31107 /* citylist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = citylist.json; sourceTree = "<group>"; };
 		7887500A2AEEADE8002B3BA2 /* TemperatureFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureFormatter.swift; sourceTree = "<group>"; };
@@ -86,7 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				7831AD842AE94E470043B020 /* CurrentWeather.swift */,
-				7883E1272AEFCC2D00C31107 /* Cities.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -111,12 +108,11 @@
 			isa = PBXGroup;
 			children = (
 				7866FA552AE401670060FBEE /* Application */,
-				7866FA592AE402050060FBEE /* ViewControllers */,
 				7866FA662AE40C8D0060FBEE /* Views */,
-				7810053D2AED688300C417C9 /* Extensions */,
-				78C21C452AEC148E00BCD737 /* Helpers */,
 				78BA03F42AE8008E002E9DF1 /* ViewModels */,
 				7831AD862AE94E4B0043B020 /* Models */,
+				7810053D2AED688300C417C9 /* Extensions */,
+				78C21C452AEC148E00BCD737 /* Helpers */,
 				7866FA582AE401FD0060FBEE /* Services */,
 				7866FA532AE401210060FBEE /* Resources */,
 			);
@@ -152,19 +148,12 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		7866FA592AE402050060FBEE /* ViewControllers */ = {
+		7866FA662AE40C8D0060FBEE /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				7866FA432AE400DE0060FBEE /* WeatherViewController.swift */,
 				7866FA602AE407950060FBEE /* CityListViewController.swift */,
 				7866FA622AE407DA0060FBEE /* TabViewController.swift */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		7866FA662AE40C8D0060FBEE /* Views */ = {
-			isa = PBXGroup;
-			children = (
 				78BA03F92AE8214E002E9DF1 /* Cells */,
 			);
 			path = Views;
@@ -290,7 +279,6 @@
 				78E85D482AF145CC0061FA89 /* Sizes.swift in Sources */,
 				7831AD7F2AE947EE0043B020 /* CurrentWeatherViewModel.swift in Sources */,
 				7866FA422AE400DE0060FBEE /* SceneDelegate.swift in Sources */,
-				7883E1282AEFCC2D00C31107 /* Cities.swift in Sources */,
 				7810053C2AED688000C417C9 /* Extension + UIView.swift in Sources */,
 				7866FA612AE407950060FBEE /* CityListViewController.swift in Sources */,
 			);
