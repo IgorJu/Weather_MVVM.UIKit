@@ -32,14 +32,8 @@ final class WeatherViewController: UIViewController {
     
     //MARK: - Lifecycle
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tabBarController?.tabBar.isTranslucent = true
-        tabBarController?.tabBar.backgroundColor = UIColor.clear
         setupGradient()
         setTableView()
         showSpinner(in: view)

@@ -95,7 +95,14 @@ final class CityListViewController: UIViewController {
         }
         
         tableView.reloadData()
-    }}
+    }
+    
+    func showWeather(for city: City) {
+        let weatherVC = WeatherViewController()
+        weatherVC.selectedCity = city
+        navigationController?.pushViewController(weatherVC, animated: true)
+    }
+}
 
 //MARK: - UITableViewDelegate, DataSource
 
@@ -121,13 +128,10 @@ extension CityListViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCity = searchResults[indexPath.row]
         showWeather(for: selectedCity)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func showWeather(for city: City) {
-        let weatherVC = WeatherViewController()
-        weatherVC.selectedCity = city
-        navigationController?.pushViewController(weatherVC, animated: true)
-    }
+    
 }
 
 

@@ -34,6 +34,7 @@ final class CityCell: UITableViewCell {
     private func setupViewCell() {
         backgroundColor = .clear
         cityNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        cityNameLabel.textColor = .white
         contentView.addSubview(cityNameLabel)
         
         addButton.setImage(UIImage(systemName: "plus"), for: .normal)
