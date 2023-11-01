@@ -56,10 +56,10 @@ final class CityCell: UITableViewCell {
         addAction?()
     }
     
-    func configure(cityName: String, completion: @escaping (String) -> Void) {
-        cityNameLabel.text = cityName
+    func configure(city: City, completion: @escaping (City) -> Void) {
+        cityNameLabel.text = city.name
         addAction = {
-            completion(cityName)
+            completion(city)
         }
     }
     

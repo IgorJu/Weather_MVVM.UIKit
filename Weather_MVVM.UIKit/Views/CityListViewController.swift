@@ -15,7 +15,7 @@ final class CityListViewController: UIViewController {
     private let searchBar = UITextField()
     
     private var searchResults: [City] = []
-    private var addedCities: [String] = []
+    private var addedCities: [City] = []
     
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -23,21 +23,27 @@ final class CityListViewController: UIViewController {
         return tableView
     }()
     
+    private let storageManager = StorageManager()
+    
     //MARK: - Lifecycle
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        fetchCityList()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupGradient()
-        fetchCityList()
+        //fetchCityList()
         setSearchBar()
         setupTableView()
     }
     
     //MARK: - Flow
+    
     private func fetchCityList() {
-        DispatchQueue.global().async {
-            self.viewModel.loadCitiesFromJSON()
-        }
+        addedCities = viewModel.loadCities()
+        tableView.reloadData()
     }
     
     private func setSearchBar() {
@@ -57,19 +63,12 @@ final class CityListViewController: UIViewController {
     }
     
     @objc private func searchBarTextChanged(_ textField: UITextField) {
-        guard let searchText = textField.text, !searchText.isEmpty else {
-            DispatchQueue.global().async {
-                self.viewModel.loadCitiesFromJSON()
-            }
-            searchResults = viewModel.cities
-            tableView.reloadData()
-            return
-        }
-        
+        guard let searchText = textField.text, !searchText.isEmpty else { return }
         searchResults = viewModel.searchCity(withName: searchText)
+        addedCities = viewModel.loadCities()
         tableView.reloadData()
     }
-    
+        
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
@@ -85,19 +84,19 @@ final class CityListViewController: UIViewController {
         ])
     }
     
-    private func addCity(_ cityName: String) {
-        viewModel.addCity(cityName)
-        addedCities.append(cityName)
+    private func addCity(_ city: City) {
+        viewModel.addCity(city)
+        addedCities.append(city)
         searchBar.text = ""
         
         searchResults = addedCities.compactMap { addedCity in
-            viewModel.cities.first(where: { $0.name == addedCity })
+            viewModel.cities.first(where: { $0.name == addedCity.name })
         }
         
         tableView.reloadData()
     }
     
-    func showWeather(for city: City) {
+    private func showWeather(for city: City) {
         let weatherVC = WeatherViewController()
         weatherVC.selectedCity = city
         navigationController?.pushViewController(weatherVC, animated: true)
@@ -118,8 +117,10 @@ extension CityListViewController: UITableViewDataSource, UITableViewDelegate {
             for: indexPath
         ) as? CityCell else { return UITableViewCell() }
         
-        cell.configure(cityName: searchResults[indexPath.row].name) { [weak self] cityName in
-            self?.addCity(cityName)
+        searchResults = viewModel.loadCities()
+        
+        cell.configure(city: searchResults[indexPath.row]) { [weak self] city in
+            self?.addCity(city)
             tableView.reloadData()
         }
         return cell
@@ -131,13 +132,4 @@ extension CityListViewController: UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    
 }
-
-
-
-
-
-
-
-

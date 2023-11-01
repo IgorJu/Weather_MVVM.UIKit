@@ -10,12 +10,21 @@ import Foundation
 final class CitiesViewModel {
     
     var cities: [City] = []
+    private let storageManager = StorageManager()
+    var isSearchCities: Bool = false
     
-    func addCity(_ cityName: String) {
-        WeatherManager.shared.getCurrentWeather(cityName) { [weak self] weather in
-            let newCity = City(name: cityName)
-            self?.cities.append(newCity)
+    
+    func addCity(_ city: City) {
+        WeatherManager.shared.getCurrentWeather(city.name) { [weak self] weather in
+            let newCity = City(name: city.name)
+            var citiesToSave = self?.storageManager.loadCities() ?? []
+            citiesToSave.append(newCity)
+            self?.storageManager.saveCities(citiesToSave)
         }
+    }
+    
+    func loadCities() -> [City] {
+        return StorageManager().loadCities() ?? []
     }
     
     func loadCitiesFromJSON() {
@@ -31,6 +40,9 @@ final class CitiesViewModel {
     }
     
     func searchCity(withName cityName: String) -> [City] {
+        DispatchQueue.global().async {
+            self.loadCitiesFromJSON()
+        }
         return cities.filter { $0.name.lowercased().contains(cityName.lowercased()) }
     }
     
